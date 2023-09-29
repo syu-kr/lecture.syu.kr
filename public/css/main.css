@@ -25,6 +25,12 @@ footer {
   text-align: center;
   padding: 20px;
 }
+.drag {
+  padding: 0px 0px 10px 0px;
+  font-size: 9px;
+  color: #ff6262;
+  display: none;
+}
 .table-dark {
   /*--bs-table-color: yellow;*/
   --bs-table-bg: #00000000;

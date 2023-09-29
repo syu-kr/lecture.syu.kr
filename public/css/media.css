@@ -19,6 +19,9 @@
   }
 }
 @media (width < 576px) {
+  .drag {
+    display: inline-block;
+  }
   table {
     font-size: 9px;
   }

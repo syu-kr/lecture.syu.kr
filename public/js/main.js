@@ -2,7 +2,7 @@ let jsondata = {}
 let daySelectCount = 0
 
 async function getRequest() {
-  const getResponse = await fetch('https://lecture.syu.kr/api/undergraduate/v1/2023/1/15', {
+  const getResponse = await fetch('https://lecture.syu.kr/api/undergraduate/v1/2023/2/15', {
     method: 'get',
   })
   const getJson = await getResponse.json()
@@ -75,8 +75,8 @@ function convertDay(day) {
 function starTest() {
   let stars = ''
   for (let i = 0; i < 5; i++) {
-    // stars += "<i class=\"bi bi-star\"></i>"
-    stars += '<i class="bi bi-star-fill" style="color: yellow;"></i>'
+    stars += '<i class="bi bi-star"></i>'
+    // stars += '<i class="bi bi-star-fill" style="color: yellow;"></i>'
   }
   return stars
 }
@@ -138,6 +138,9 @@ function getSectionInfo(datas, day, className) {
   }
   let table_tag = `
     <div class="table-responsive">
+      <div class="drag">
+        표가 짤린 경우 표를 옆으로 드래그 하세요.
+      </div>
       <table class="table table-dark">
         <thead>
           <tr>

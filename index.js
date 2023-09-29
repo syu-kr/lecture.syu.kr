@@ -53,6 +53,11 @@ app.get('/', (req, res) => {
   res.status(200).sendFile(__dirname + '/page/index.html')
 })
 
+app.get('/cse', (req, res) => {
+  userInfo(req)
+  res.status(200).sendFile(__dirname + '/page/cse.html')
+})
+
 app.get('/department', (req, res) => {
   userInfo(req)
   res.status(200).sendFile(__dirname + '/page/department.html')
@@ -66,6 +71,32 @@ app.get('/info', (req, res) => {
 app.get('/api/docs', (req, res) => {
   userInfo(req)
   res.status(200).sendFile(__dirname + '/page/api/docs.html')
+})
+
+app.get('/api/professor/v1/all', (req, res) => {
+  userInfo(req)
+  const jsonData = JSON.parse(fs.readFileSync(__dirname + '/professor/professor.json', 'utf8'))
+  res.status(200).json(jsonData)
+})
+
+app.get('/api/professor/v1/:name', param('name').exists(), param('name').isString(), (req, res) => {
+  userInfo(req)
+  const errorFormatter = ({location, msg, param, value, nestedErrors}) => {
+    return param + ': ' + msg
+  }
+  const result = validationResult(req).formatWith(errorFormatter)
+  if (!result.isEmpty()) {
+    res.status(401).json(result)
+    return
+  }
+  try {
+    const jsonData = JSON.parse(
+      fs.readFileSync(__dirname + '/professor/' + req.params.name + '.json', 'utf8'),
+    )
+    res.status(200).json(jsonData)
+  } catch {
+    res.status(401).json({statusCode: 401, message: 'unknown request.'})
+  }
 })
 
 app.get('/api/college/v1/all', (req, res) => {
@@ -120,4 +151,4 @@ app.get('*', (req, res) => {
   res.status(404).json({statusCode: 404, message: 'unknown request.'})
 })
 
-http.createServer(app).listen(1235, '0.0.0.0')
+http.createServer(app).listen(4545, '0.0.0.0')
