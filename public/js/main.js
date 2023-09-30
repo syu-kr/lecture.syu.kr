@@ -2,7 +2,7 @@ let jsondata = {}
 let daySelectCount = 0
 
 async function getRequest() {
-  const getResponse = await fetch('https://lecture.syu.kr/api/undergraduate/v1/2023/2/15', {
+  const getResponse = await fetch('https://api.syu.kr/v1/undergraduate/2023/2/15', {
     method: 'get',
   })
   const getJson = await getResponse.json()

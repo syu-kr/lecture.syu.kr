@@ -1,5 +1,7 @@
 async function getRequest(urlParams) {
-  const getResponse = await fetch('https://lecture.syu.kr/api/' + urlParams, {method: 'get'})
+  const getResponse = await fetch('https://api.syu.kr/v1/undergraduate/' + urlParams, {
+    method: 'get',
+  })
   const getJson = await getResponse.json()
   return getJson
 }
@@ -26,7 +28,7 @@ function setSemesters() {
 }
 
 function setDepartments() {
-  getRequest('college/v1/all').then((data) => {
+  getRequest('list').then((data) => {
     let datas = data['api']
     let tags = ''
     tags += '<select class="form-select form-select-sm" name="" onchange="onDepartmentEvent(this)">'
@@ -98,7 +100,7 @@ function onYearEvent(object) {
   year = object.value
   document.getElementById('info-year').innerHTML = year
   if (year != 0 && semester != 0 && department != 0) {
-    getRequest('undergraduate/v1/' + year + '/' + semester + '/' + department).then((data) => {
+    getRequest(year + '/' + semester + '/' + department).then((data) => {
       document.getElementById('info-count').innerHTML = data['api'].length + '개'
       document.getElementById('department-info').innerHTML = setInfo(data)
     })
@@ -109,7 +111,7 @@ function onSemesterEvent(object) {
   semester = object.value
   document.getElementById('info-semester').innerHTML = semester
   if (year != 0 && semester != 0 && department != 0) {
-    getRequest('undergraduate/v1/' + year + '/' + semester + '/' + department).then((data) => {
+    getRequest(year + '/' + semester + '/' + department).then((data) => {
       document.getElementById('info-count').innerHTML = data['api'].length + '개'
       document.getElementById('department-info').innerHTML = setInfo(data)
     })
@@ -122,7 +124,7 @@ function onDepartmentEvent(object) {
     object.selectedIndex
   ].text.replaceAll('-', '')
   if (year != 0 && semester != 0 && department != 0) {
-    getRequest('undergraduate/v1/' + year + '/' + semester + '/' + department).then((data) => {
+    getRequest(year + '/' + semester + '/' + department).then((data) => {
       document.getElementById('info-count').innerHTML = data['api'].length + '개'
       document.getElementById('department-info').innerHTML = setInfo(data)
     })

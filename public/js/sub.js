@@ -1,4 +1,4 @@
-fetch('https://lecture.syu.kr/api/college/v1/all', {method: 'get'})
+fetch('https://api.syu.kr/v1/undergraduate/list', {method: 'get'})
   .then((response) => response.json())
   .then((data) => {
     const testData = JSON.stringify(data)

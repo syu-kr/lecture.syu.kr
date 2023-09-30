@@ -30,24 +30,18 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
     <script>
       async function getRequest() {
-        const getResponse = await fetch('https://lecture.syu.kr/api/professor/v1/all', {
+        const getResponse = await fetch('https://api.syu.kr/v1/professor/list', {
           method: 'get',
         })
         const getJson = await getResponse.json()
-        return getJson
+        return getJson['api']
       }
 
       async function getList(obj) {
-        let professorName = obj.innerHTML.replace(
-          /\(컴퓨터공학부\)|\(컴퓨터·메카트로닉스공학부\)|\(컴퓨터학부\)/g,
-          '',
-        )
-        const getResponse = await fetch(
-          'https://lecture.syu.kr/api/professor/v1/' + professorName,
-          {
-            method: 'get',
-          },
-        )
+        let professorName = obj.innerHTML.replace(/\(.*?\)/g, '')
+        const getResponse = await fetch('https://api.syu.kr/v1/professor/' + professorName, {
+          method: 'get',
+        })
 
         if (getResponse.status == 401) {
           document.getElementById(obj.innerHTML + '-info').innerHTML = '정보가 없습니다.'
@@ -55,15 +49,16 @@
         }
 
         const getJson = await getResponse.json()
+        const getData = getJson['api']
 
         html = ''
 
-        for (lecture in getJson) {
+        for (lecture in getData) {
           html += '<h6 style="margin: 5px; font-weight: bold;">' + lecture + '</h6>'
           html += '<hr style="border: 2px solid;"/>'
-          for (recommend of getJson[lecture]) {
+          for (recommend of getData[lecture]) {
             html += '<p style="font-size: 14px;">' + recommend + '</p>'
-            if (getJson[lecture].at(-1) != recommend) {
+            if (getData[lecture].at(-1) != recommend) {
               html += '<hr style="border-top: 2px dotted;"/>'
             } else {
               html += '<div style="margin: 40px"></div>'
@@ -82,8 +77,9 @@
             html += '<h4>' + ys + ' 교수진</h4>'
             html += '<hr />'
             html += '<ul>'
-            for (professor of data[ys]) {
-              if (ys == '2023 1학기 정규') {
+            for (let professor of data[ys]) {
+              professor = professor.replaceAll(' ', '')
+              if (ys == '2023 2학기 정규') {
                 html +=
                   '<li><a href="#' +
                   professor +
