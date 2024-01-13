@@ -10,7 +10,7 @@ function setYears() {
   let tags = ''
   tags += '<select class="form-select form-select-sm" name="" onchange="onYearEvent(this)">'
   tags += '<option value="0" selected>-개설년도-</option>'
-  for (let i = 2000; i <= 2023; i++) {
+  for (let i = 2000; i <= new Date().getFullYear(); i++) {
     tags += '<option value="' + i + '">-' + i + '-</option>'
   }
   tags += '</select>'
