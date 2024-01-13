@@ -110,7 +110,7 @@ function getSectionInfo(datas, day, className) {
   for (let i = 0; i < newData.length; i++) {
     html_tag += `
       <tr>
-        <td nowrap><span style="color: #5f6062;">${newData[i]['과목코드']}</span></td>
+        <td nowrap><span style="color: #5f6062;">${newData[i]['강좌번호']}</span></td>
         <td nowrap><strong><span style="color: white;">${newData[i]['과목명']}</span></strong></td>
         <td nowrap><span style="color: #5f6062;">${newData[i]['학년']}</span></td>
         <td nowrap><span style="color: yellow;">${newData[i]['학점']}</span></td>
@@ -144,7 +144,7 @@ function getSectionInfo(datas, day, className) {
       <table class="table table-dark">
         <thead>
           <tr>
-            <th scope="col" nowrap>과목코드</th>
+            <th scope="col" nowrap>강좌번호</th>
             <th scope="col" nowrap>과목명</th>
             <th scope="col" nowrap>학년</th>
             <th scope="col" nowrap>학점</th>

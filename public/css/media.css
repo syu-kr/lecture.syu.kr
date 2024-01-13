@@ -1,3 +1,6 @@
+.title {
+  font-size: 24pt;
+}
 @media (width < 992px) {
   table {
     font-size: 15px;
@@ -6,6 +9,9 @@
     /* padding: 60px; */
     /* font-size: 14px; */
     padding: 0.3rem 0.3rem;
+  }
+  .title {
+    font-size: 24pt;
   }
 }
 @media (width < 768px) {
@@ -16,6 +22,9 @@
     padding: 0.2rem 0.2rem;
     /* padding: 60px; */
     /* font-size: 11px; */
+  }
+  .title {
+    font-size: 18pt;
   }
 }
 @media (width < 576px) {
@@ -36,5 +45,8 @@
   }
   .class-section .class-btn {
     font-size: 0.8rem;
+  }
+  .title {
+    font-size: 13pt;
   }
 }

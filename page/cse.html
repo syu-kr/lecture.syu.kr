@@ -54,7 +54,7 @@
         html = ''
 
         for (lecture in getData) {
-          html += '<h6 style="margin: 5px; font-weight: bold;">' + lecture + '</h6>'
+          html += '<h5 style="margin: 5px; font-weight: bold; color: yellow;">' + lecture + '</h5>'
           html += '<hr style="border: 2px solid;"/>'
           for (recommend of getData[lecture]) {
             html += '<p style="font-size: 14px;">' + recommend + '</p>'
@@ -69,61 +69,113 @@
         document.getElementById(obj.innerHTML + '-info').innerHTML = html
       }
 
+      function makeBody(data, ys) {
+        let html = ''
+        html += '<ul>'
+        for (let professor of data[ys]) {
+          professor = professor.replaceAll(' ', '')
+          if (ys == '2023 2학기 정규') {
+            html +=
+              '<li><a href="#' +
+              professor +
+              '" data-bs-toggle="modal" data-bs-target="#' +
+              professor +
+              '" onclick="getList(this);">' +
+              professor +
+              '</a></li>'
+            html += `
+            <div class="modal fade" id="${professor}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">${professor}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <span id="${professor + '-info'}">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">닫기</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            `
+          } else {
+            html += '<li>' + professor + '</li>'
+          }
+        }
+        html += '</ul>'
+        return html
+      }
+
       getRequest().then(function (data) {
         let html = ''
         Object.keys(data)
           .reverse()
           .forEach(function (ys) {
-            html += '<h4>' + ys + ' 교수진</h4>'
-            html += '<hr />'
-            html += '<ul>'
-            for (let professor of data[ys]) {
-              professor = professor.replaceAll(' ', '')
-              if (ys == '2023 2학기 정규') {
-                html +=
-                  '<li><a href="#' +
-                  professor +
-                  '" data-bs-toggle="modal" data-bs-target="#' +
-                  professor +
-                  '" onclick="getList(this);">' +
-                  professor +
-                  '</a></li>'
-                html += `
-                <div class="modal fade" id="${professor}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">${professor}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <span id="${professor + '-info'}">
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      </div>
+            html += `
+            <div class="class-section">
+              <div class="accordion" id="accordionExample${ys.replace(/(\s*)/g, '')}">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button ${ys == '2023 2학기 정규' ? '' : 'collapsed'}"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne${ys.replace(/(\s*)/g, '')}"
+                      aria-expanded="${ys == '2023 2학기 정규' ? 'true' : 'false'}"
+                      aria-controls="collapseOne${ys.replace(/(\s*)/g, '')}">
+                      <span style="color: white; font-size: 15pt"
+                        >${ys} 교수진</strong
+                      ></span>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseOne${ys.replace(/(\s*)/g, '')}"
+                    class="accordion-collapse collapse ${ys == '2023 2학기 정규' ? 'show' : ''}"
+                    data-bs-parent="#accordionExample${ys.replace(/(\s*)/g, '')}">
+                    <div class="accordion-body" style="color: white;">
+                      ${makeBody(data, ys)}
                     </div>
                   </div>
                 </div>
-                `
-              } else {
-                html += '<li>' + professor + '</li>'
-              }
-            }
-            html += '</ul>'
+              </div>
+            </div>
+            `
           })
         document.getElementById('professor').innerHTML = html
       })
     </script>
+    <link href="/css/main.css" rel="stylesheet" type="text/css" />
+    <link href="/css/media.css" rel="stylesheet" type="text/css" />
+    <style>
+      .modal {
+        --bs-modal-bg: #212529;
+      }
+    </style>
   </head>
-  <body>
-    <h2 style="font-weight: bold; text-align: center; margin: 10px">
-      삼육대학교 컴퓨터공학부 강의평가 조회
-    </h2>
-    <div style="border: 1px solid; padding: 10px; margin: 10px">
+  <body style="background-color: #212529; color: white">
+    <div style="padding: 3rem; text-align: center">
+      <div>
+        <img src="/logo.png" width="128px" />
+      </div>
+      <div class="title" style="padding: 3rem; color: white">
+        <strong>삼육대학교 컴퓨터공학부<br />에브리타임 강의평가</strong>
+      </div>
+      <hr style="color: white" />
+    </div>
+    <!-- <div style="border: 1px solid; padding: 10px; margin: 10px">
       <p>Sahmyook Univ. CSE. EveryTime. Lecture evaluation.</p>
       <a href="https://github.com/syu-kr/cse-lecture">CSE-Lecture Crawling Source</a>
+    </div> -->
+    <div class="container">
+      <span id="professor"></span>
     </div>
-    <span id="professor" style="margin: 10px"></span>
+    <div style="background-color: #0000001f; padding: 2rem; text-align: center">
+      <div style="color: white; font-size: 6pt">
+        Copyright(C) 2023 - 2024 SYU KR (김상윤). All rights reserved.
+      </div>
+    </div>
   </body>
 </html>
