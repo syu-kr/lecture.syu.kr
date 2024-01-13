@@ -1,10 +1,15 @@
 let jsondata = {}
 let daySelectCount = 0
 
+const date = new Date()
+const year = date.getFullYear()
+const semester = date.getMonth() + 1 < 7 ? '1' : '2'
+
 async function getRequest() {
-  const getResponse = await fetch('https://api.syu.kr/v1/undergraduate/2023/2/15', {
-    method: 'get',
-  })
+  const getResponse = await fetch(
+    'https://api.syu.kr/v1/undergraduate/' + year + '/' + semester + '/15',
+    {method: 'get'},
+  )
   const getJson = await getResponse.json()
   return getJson
 }
@@ -37,6 +42,7 @@ function setBasePage(datas, day) {
       getSectionCount(datas, day, classArea[i]) + '개'
     document.getElementById(sectionInfo).innerHTML = getSectionInfo(datas, day, classArea[i])
   }
+  document.getElementById('day').innerHTML = year + ' - ' + semester + '학기 정규'
   document.getElementById('count').innerHTML = daySelectCount + '개'
 }
 
