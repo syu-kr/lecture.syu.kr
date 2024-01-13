@@ -42,7 +42,7 @@ function setBasePage(datas, day) {
       getSectionCount(datas, day, classArea[i]) + '개'
     document.getElementById(sectionInfo).innerHTML = getSectionInfo(datas, day, classArea[i])
   }
-  document.getElementById('day').innerHTML = year + ' - ' + semester + '학기 정규'
+  document.getElementById('day').innerHTML = year + '년 ' + semester + '학기 정규'
   document.getElementById('count').innerHTML = daySelectCount + '개'
 }
 

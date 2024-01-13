@@ -11,7 +11,7 @@ function setYears() {
   tags += '<select class="form-select form-select-sm" name="" onchange="onYearEvent(this)">'
   tags += '<option value="0" selected>-개설년도-</option>'
   for (let i = 2000; i <= new Date().getFullYear(); i++) {
-    tags += '<option value="' + i + '">-' + i + '-</option>'
+    tags += '<option value="' + i + '">-' + i + '년-</option>'
   }
   tags += '</select>'
   document.getElementById('year').innerHTML = tags
@@ -98,7 +98,7 @@ let department = 0
 
 function onYearEvent(object) {
   year = object.value
-  document.getElementById('info-year').innerHTML = year
+  // document.getElementById('info-year').innerHTML = year
   if (year != 0 && semester != 0 && department != 0) {
     getRequest(year + '/' + semester + '/' + department).then((data) => {
       document.getElementById('info-count').innerHTML = data['api'].length + '개'
@@ -109,7 +109,7 @@ function onYearEvent(object) {
 
 function onSemesterEvent(object) {
   semester = object.value
-  document.getElementById('info-semester').innerHTML = semester
+  // document.getElementById('info-semester').innerHTML = semester
   if (year != 0 && semester != 0 && department != 0) {
     getRequest(year + '/' + semester + '/' + department).then((data) => {
       document.getElementById('info-count').innerHTML = data['api'].length + '개'
@@ -120,9 +120,9 @@ function onSemesterEvent(object) {
 
 function onDepartmentEvent(object) {
   department = object.value
-  document.getElementById('info-department').innerHTML = object.options[
-    object.selectedIndex
-  ].text.replaceAll('-', '')
+  // document.getElementById('info-department').innerHTML = object.options[
+  //   object.selectedIndex
+  // ].text.replaceAll('-', '')
   if (year != 0 && semester != 0 && department != 0) {
     getRequest(year + '/' + semester + '/' + department).then((data) => {
       document.getElementById('info-count').innerHTML = data['api'].length + '개'

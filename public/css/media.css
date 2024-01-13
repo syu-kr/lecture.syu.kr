@@ -47,6 +47,9 @@
     font-size: 0.8rem;
   }
   .title {
-    font-size: 13pt;
+    font-size: 11pt;
+  }
+  .class-header {
+    font-size: 9.5pt;
   }
 }
