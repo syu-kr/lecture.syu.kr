@@ -70,6 +70,9 @@ function setInfo(datas) {
   }
   let table_tag = `
     <div class="table-responsive">
+      <div class="drag">
+        표가 짤린 경우 표를 옆으로 드래그 하세요.
+      </div>
       <table class="table table-dark">
         <thead>
           <tr>

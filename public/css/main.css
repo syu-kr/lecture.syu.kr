@@ -4,6 +4,7 @@ body {
   color: white;
   font-size: 17px;
   font-family: 'NanumSquare', sans-serif;
+  overflow-y: scroll;
 }
 p {
   margin: 1rem;
