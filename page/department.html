@@ -34,6 +34,29 @@
     <link href="/css/media.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <nav class="navbar navbar-expand navbar-dark bg-dark" aria-label="Tenth navbar example">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse justify-content-center" id="dropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="dropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                >MENU</a
+              >
+              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdown">
+                <li><a class="dropdown-item" href="/">공통(교양) 강의 검색</a></li>
+                <li><a class="dropdown-item" href="/department">학부(과) 강의 검색</a></li>
+                <li><a class="dropdown-item" href="/info">교양과정 편성표 확인</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     <header>
       <div class="container">
         <div class="class-header">
@@ -61,10 +84,6 @@
           </div>
         </div>
         <div class="class-header">
-          <!-- <p>
-            <span style="color: yellow;">NEW. </span>
-            <span style="color: #63ff7d;">모바일/컴퓨터 모두 최적화된 화면을 제공합니다.</span>
-          </p> -->
           <p>
             <span style="color: yellow">NEW. </span>
             <span style="color: #63ff7d"
@@ -102,7 +121,6 @@
         Copyright(C) 2023 - 2024 SYU KR (김상윤). All rights reserved.
       </div>
     </div>
-    <!-- <script src="/js/main.js"></script> -->
     <script src="/js/department.js"></script>
   </body>
 </html>

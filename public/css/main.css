@@ -75,3 +75,8 @@ footer {
 .accordion-button::after {
   filter: invert();
 }
+.dropdown-menu {
+  left: 50% !important;
+  right: auto !important;
+  transform: translate(-50%, 0) !important;
+}
