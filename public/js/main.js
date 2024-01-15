@@ -33,7 +33,7 @@ function setBasePage(datas, day) {
     '사회과학영역',
     '인문예술영역',
     '디지털 리터러시영역',
-    '', // 교직영역
+    '', // 그 외 영역
   ]
   for (let i = 0; i < classArea.length; i++) {
     const sectionCount = String(i + 1) // 1, 2, 3, 4, 5, 6, 7, 8
@@ -118,9 +118,17 @@ function getSectionInfo(datas, day, className) {
       <tr>
         <td nowrap><span style="color: #5f6062;">${newData[i]['강좌번호']}</span></td>
         <td nowrap><strong><span style="color: white;">${newData[i]['과목명']}</span></strong></td>
-        <td nowrap><span style="color: #5f6062;">${newData[i]['학년']}</span></td>
-        <td nowrap><span style="color: yellow;">${newData[i]['학점']}</span></td>
-        <td nowrap><span style="color: #5f6062;">${newData[i]['이수구분']}</span></td>
+        ${
+          className == ''
+            ? '<td nowrap><span style="color: #5f6062;">' + newData[i]['학년'] + '</span></td>'
+            : ''
+        }
+        <td nowrap><span style="color: #5f6062;">${newData[i]['학점']}</span></td>
+        ${
+          className == ''
+            ? '<td nowrap><span style="color: #5f6062;">' + newData[i]['이수구분'] + '</span></td>'
+            : ''
+        }
         <td nowrap><span style="color: #5f6062;">
           <a href="https://everytime.kr/lecture/search?keyword=${
             newData[i]['교수명']
@@ -152,11 +160,11 @@ function getSectionInfo(datas, day, className) {
           <tr>
             <th scope="col" nowrap>강좌번호</th>
             <th scope="col" nowrap>과목명</th>
-            <th scope="col" nowrap>학년</th>
+            ${className == '' ? '<th scope="col" nowrap>학년</th>' : ''}
             <th scope="col" nowrap>학점</th>
-            <th scope="col" nowrap>이수구분</th>
+            ${className == '' ? '<th scope="col" nowrap>이수구분</th>' : ''}
             <th scope="col" nowrap>교수명</th>
-            <th scope="col" nowrap>수업시간
+            <th scope="col" nowrap>수업시간</th>
             <th class="text-end" scope="col" nowrap>장소</th>
             <th class="text-center" scope="col" nowrap>별점</th>
           </tr>

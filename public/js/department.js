@@ -10,7 +10,7 @@ function setYears() {
   let tags = ''
   tags += '<select class="form-select form-select-sm" name="" onchange="onYearEvent(this)">'
   tags += '<option value="0" selected>-개설년도-</option>'
-  for (let i = 2000; i <= new Date().getFullYear(); i++) {
+  for (let i = new Date().getFullYear(); i >= 2000; i--) {
     tags += '<option value="' + i + '">-' + i + '년-</option>'
   }
   tags += '</select>'
@@ -82,7 +82,7 @@ function setInfo(datas) {
             <th scope="col" nowrap>학점</th>
             <th scope="col" nowrap>이수구분</th>
             <th scope="col" nowrap>교수명</th>
-            <th scope="col" nowrap>수업시간
+            <th scope="col" nowrap>수업시간</th>
             <th class="text-end" scope="col" nowrap>장소</th>
           </tr>
         </thead>
