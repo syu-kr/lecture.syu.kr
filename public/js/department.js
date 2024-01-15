@@ -122,7 +122,7 @@ function onSemesterEvent(object) {
 }
 
 function onDepartmentEvent(object) {
-  department = object.value
+  department = object.options[object.selectedIndex].text.replaceAll('-', '')
   // document.getElementById('info-department').innerHTML = object.options[
   //   object.selectedIndex
   // ].text.replaceAll('-', '')

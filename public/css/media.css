@@ -15,6 +15,9 @@
   }
 }
 @media (width < 768px) {
+  .drag {
+    display: inline-block;
+  }
   table {
     font-size: 11px;
   }

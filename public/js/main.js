@@ -18,6 +18,7 @@ Promise.all([request1, request2])
   .then(([data1, data2]) => {
     setBasePage(data1, data2, '전체')
     jsondata = data1
+    jsondataSugang = data2
   })
   .catch((error) => {
     console.error(error)
@@ -25,7 +26,7 @@ Promise.all([request1, request2])
 
 function daySelectEvent(object) {
   daySelectCount = 0
-  setBasePage(jsondata, object.value)
+  setBasePage(jsondata, jsondataSugang, object.value)
 }
 
 function setBasePage(data1, data2, day) {
@@ -140,7 +141,11 @@ function getSectionInfo(data1, data2, day, className) {
           <a href="https://everytime.kr/lecture/search?keyword=${
             newData[i]['교수명']
           }&condition=professor" target="_blank">
-            ${newData[i]['교수명']}
+          ${
+            newData[i]['교수명'].length < 7
+              ? newData[i]['교수명']
+              : newData[i]['교수명'].substr(0, 7) + '...'
+          }
           </a>
         </span></td>
         <td nowrap><span style="color: yellow;">${newData[i]['수업시간']}</span></td>
