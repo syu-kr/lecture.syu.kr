@@ -35,7 +35,7 @@ footer {
 .table-dark {
   /*--bs-table-color: yellow;*/
   --bs-table-bg: #00000000;
-  --bs-table-border-color: white;
+  --bs-table-border-color: #818181;
 }
 .class-header {
   padding: 10px 0px 10px 0px;

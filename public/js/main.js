@@ -1,30 +1,34 @@
 let jsondata = {}
+let jsondataSugang = {}
 let daySelectCount = 0
 
 const date = new Date()
 const year = date.getFullYear()
 const semester = date.getMonth() + 1 < 7 ? '1' : '2'
 
-async function getRequest() {
-  const getResponse = await fetch(
-    'https://api.syu.kr/v1/undergraduate/' + year + '/' + semester + '/15',
-    {method: 'get'},
-  )
-  const getJson = await getResponse.json()
-  return getJson
-}
+const request1 = fetch('https://api.syu.kr/v1/undergraduate/' + year + '/' + semester + '/15', {
+  method: 'get',
+}).then((response) => response.json())
 
-getRequest().then((data) => {
-  setBasePage(data, '전체')
-  jsondata = data
-})
+const request2 = fetch('https://sugang.syu.kr/api/basket', {
+  method: 'get',
+}).then((response) => response.json())
+
+Promise.all([request1, request2])
+  .then(([data1, data2]) => {
+    setBasePage(data1, data2, '전체')
+    jsondata = data1
+  })
+  .catch((error) => {
+    console.error(error)
+  })
 
 function daySelectEvent(object) {
   daySelectCount = 0
   setBasePage(jsondata, object.value)
 }
 
-function setBasePage(datas, day) {
+function setBasePage(data1, data2, day) {
   let classArea = [
     '기초교양',
     '인성교양',
@@ -39,25 +43,25 @@ function setBasePage(datas, day) {
     const sectionCount = String(i + 1) // 1, 2, 3, 4, 5, 6, 7, 8
     const sectionInfo = String(i + 1) + String(i + 1) // 11, 22, 33, 44, 55, 66, 77, 88
     document.getElementById(sectionCount).innerHTML =
-      getSectionCount(datas, day, classArea[i]) + '개'
-    document.getElementById(sectionInfo).innerHTML = getSectionInfo(datas, day, classArea[i])
+      getSectionCount(data1, day, classArea[i]) + '개'
+    document.getElementById(sectionInfo).innerHTML = getSectionInfo(data1, data2, day, classArea[i])
   }
   document.getElementById('day').innerHTML = year + '년 ' + semester + '학기 정규'
   document.getElementById('count').innerHTML = daySelectCount + '개'
 }
 
-function getSectionCount(datas, day, className) {
+function getSectionCount(data1, day, className) {
   let count = 0
-  for (let i = 0; i < datas['api'].length; i++) {
-    if (datas['api'][i]['영역구분'] === className) {
+  for (let i = 0; i < data1['api'].length; i++) {
+    if (data1['api'][i]['영역구분'] === className) {
       if (day === '전체') {
         count++
         daySelectCount++
-      } else if (datas['api'][i]['수업시간'].substr(0, 1) === day) {
+      } else if (data1['api'][i]['수업시간'].substr(0, 1) === day) {
         count++
         daySelectCount++
-      } else if (datas['api'][i]['수업시간'].split(',')[1] !== undefined) {
-        if (datas['api'][i]['수업시간'].split(',')[1].substr(0, 1) === day) {
+      } else if (data1['api'][i]['수업시간'].split(',')[1] !== undefined) {
+        if (data1['api'][i]['수업시간'].split(',')[1].substr(0, 1) === day) {
           count++
           daySelectCount++
         }
@@ -87,18 +91,18 @@ function starTest() {
   return stars
 }
 
-function getSectionInfo(datas, day, className) {
+function getSectionInfo(data1, data2, day, className) {
   let newData = []
   let html_tag = ''
-  for (let i = 0; i < datas['api'].length; i++) {
-    if (datas['api'][i]['영역구분'] === className) {
+  for (let i = 0; i < data1['api'].length; i++) {
+    if (data1['api'][i]['영역구분'] === className) {
       if (day === '전체') {
-        newData.push(datas['api'][i])
-      } else if (datas['api'][i]['수업시간'].substr(0, 1) === day) {
-        newData.push(datas['api'][i])
-      } else if (datas['api'][i]['수업시간'].split(',')[1] !== undefined) {
-        if (datas['api'][i]['수업시간'].split(',')[1].substr(0, 1) === day) {
-          newData.push(datas['api'][i])
+        newData.push(data1['api'][i])
+      } else if (data1['api'][i]['수업시간'].substr(0, 1) === day) {
+        newData.push(data1['api'][i])
+      } else if (data1['api'][i]['수업시간'].split(',')[1] !== undefined) {
+        if (data1['api'][i]['수업시간'].split(',')[1].substr(0, 1) === day) {
+          newData.push(data1['api'][i])
         }
       }
     }
@@ -114,6 +118,9 @@ function getSectionInfo(datas, day, className) {
     if (timeA < timeB) return -1
   })
   for (let i = 0; i < newData.length; i++) {
+    const comp = data2.data.find(function (e) {
+      return className != '기초교양' && e['강좌명'] == newData[i]['과목명']
+    })
     html_tag += `
       <tr>
         <td nowrap><span style="color: #5f6062;">${newData[i]['강좌번호']}</span></td>
@@ -142,11 +149,16 @@ function getSectionInfo(datas, day, className) {
             ${newData[i]['장소'].replace(/강의실|\(小\)|\(中\)|\(大\)/g, '')}
           </span>
         </td>
-        <td class="text-center" nowrap>
+        <td class="text-center" style="border-left-width: 1px" nowrap>
+          <span style="color: white;">
+            ${comp !== undefined ? comp['경쟁률'].toFixed(2) + '' : '0.00'}:1
+          </span>
+        </td>
+        <!-- <td class="text-center" nowrap>
           <span style="color: #5f6062;">
             ${starTest()}
           </span>
-        </td>
+        </td> -->
       </tr>
     `
   }
@@ -166,7 +178,7 @@ function getSectionInfo(datas, day, className) {
             <th scope="col" nowrap>교수명</th>
             <th scope="col" nowrap>수업시간</th>
             <th class="text-end" scope="col" nowrap>장소</th>
-            <th class="text-center" scope="col" nowrap>별점</th>
+            <th class="text-center" style="border-left-width: 1px" scope="col" nowrap>전 경쟁률</th>
           </tr>
         </thead>
         <tbody>
