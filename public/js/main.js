@@ -6,13 +6,11 @@ const date = new Date()
 const year = date.getFullYear()
 const semester = date.getMonth() + 1 < 7 ? '1' : '2'
 
-const request1 = fetch('https://api.syu.kr/v1/undergraduate/' + year + '/' + semester + '/15', {
-  method: 'get',
-}).then((response) => response.json())
+const request1 = fetch(
+  'https://api.syu.kr/v1/undergraduate/' + year + '/' + semester + '/공통(교양)',
+).then((response) => response.json())
 
-const request2 = fetch('https://sugang.syu.kr/api/basket', {
-  method: 'get',
-}).then((response) => response.json())
+const request2 = fetch('https://sugang.syu.kr/api/basket').then((response) => response.json())
 
 Promise.all([request1, request2])
   .then(([data1, data2]) => {
@@ -92,6 +90,13 @@ function starTest() {
   return stars
 }
 
+function competitionColor(value) {
+  if (value >= 3) return 'red'
+  else if (value >= 2) return 'orange'
+  else if (value >= 1) return 'yellow'
+  else return 'green'
+}
+
 function getSectionInfo(data1, data2, day, className) {
   let newData = []
   let html_tag = ''
@@ -155,9 +160,16 @@ function getSectionInfo(data1, data2, day, className) {
           </span>
         </td>
         <td class="text-center" style="border-left-width: 1px" nowrap>
-          <span style="color: white;">
-            ${comp !== undefined ? comp['경쟁률'].toFixed(2) + '' : '0.00'}:1
-          </span>
+        ${
+          comp == undefined
+            ? '<span style="color: #5f6062;">0.00:1</span>'
+            : '<span style="color: ' +
+              competitionColor(comp['경쟁률'].toFixed(2)) +
+              ';">' +
+              comp['경쟁률'].toFixed(2) +
+              ':1' +
+              '</span>'
+        }
         </td>
         <!-- <td class="text-center" nowrap>
           <span style="color: #5f6062;">
@@ -183,7 +195,7 @@ function getSectionInfo(data1, data2, day, className) {
             <th scope="col" nowrap>교수명</th>
             <th scope="col" nowrap>수업시간</th>
             <th class="text-end" scope="col" nowrap>장소</th>
-            <th class="text-center" style="border-left-width: 1px" scope="col" nowrap>전 경쟁률</th>
+            <th class="text-center" width = "10px" style="border-left-width: 1px" scope="col" nowrap>전 경쟁률</th>
           </tr>
         </thead>
         <tbody>
